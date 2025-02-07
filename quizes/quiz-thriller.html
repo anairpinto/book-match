@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Thriller</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+
+<body>
+    <button id="playButton">Play Sound</button>
+    <audio id="sound" loop>
+        <source src="../sound/thriller.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <img class="faca" src="../images/faca-gif.GIF" alt="">
+    <img class="faca2" src="../images/faca-gif.GIF" alt="">
+    <a class="go-back" href="../generos.html">
+        <img src="../images/seta-para-tras.png" alt="">
+    </a>
+    
+    <form id="quiz-form">
+        <div class="question" id="question1">
+            <h1 class="align-center-quiz">1. QUE TEMA PRINCIPAL MAIS TE ATRAI?</h1>
+            <label><input type="radio" name="question1" value="A"> Mistérios históricos e segredos de
+                família</label><br>
+            <label><input type="radio" name="question1" value="B"> Psicologia e uma luta interna contra a própria
+                escuridão</label><br>
+            <label><input type="radio" name="question1" value="C"> Investigações complexas em busca de um
+                assassino</label><br>
+        </div>
+        <div class="question" id="question2">
+            <h1 class="align-center-quiz">2. GOSTAS DE THRILLERS COM ELEMENTOS DE HORROR?</h1>
+            <label><input type="radio" name="question2" value="A"> Não necessariamente, prefiro mistérios mais
+                realistas</label><br>
+            <label><input type="radio" name="question2" value="B e C"> Sim, seria um bom extra</label><br>
+        </div>
+        <div class="question" id="question3">
+            <h1 class="align-center-quiz">3. QUE CARACTERÍSTICAS GOSTAS MAIS NO PRESONAGEM PRINCIPAL?</h1>
+            <label><input type="radio" name="question3" value="A"> Resiliência e determinação para descobrir a
+                verdade</label><br>
+            <label><input type="radio" name="question3" value="B"> Complexidade moral e interna, com um passado
+                conturbado</label><br>
+            <label><input type="radio" name="question3" value="C"> Uma inteligência excecional e um método de
+                investigação único</label><br>
+        </div>
+        <div class="question" id="question4">
+            <h1 class="align-center-quiz">4. O QUE TE ATRAI MAIS NUM VILÃO?</h1>
+            <label><input type="radio" name="question4" value="A"> A sua mente brilhante e a sua habilidade de manipular
+                os outros</label><br>
+            <label><input type="radio" name="question4" value="B"> A sua complexidade psicológica e motivações
+                intrigantes</label><br>
+            <label><input type="radio" name="question4" value="C"> O medo que ele instiga nos protagonistas e nos
+                leitores</label><br>
+        </div>
+        <div class="question" id="question5">
+            <h1 class="align-center-quiz">5. QUE TIPO DE DESFECHO PREFERES?</h1>
+            <label><input type="radio" name="question5" value="A"> Com revelações chocantes e um final
+                inesperados</label><br>
+            <label><input type="radio" name="question5" value="B"> Através de um confronto interno e uma revelação
+                psicológica</label><br>
+            <label><input type="radio" name="question5" value="C"> Com uma resolução satisfatória</label><br>
+        </div>
+        <div class="button-container">
+            <button class="quiz-but" type="button" id="prev-btn" onclick="prevQuestion()">Anterior</button>
+            <button class="quiz-but" type="button" id="next-btn" onclick="nextQuestion()">Próximo</button>
+            <button class="quiz-but" type="button" id="submit-btn" onclick="submitQuiz()">Recomendação</button>
+        </div>
+    </form>
+
+    <script>
+        let currentQuestion = 1;
+        const totalQuestions = 5;
+
+        document.getElementById('question' + currentQuestion).style.display = 'block';
+        document.getElementById('prev-btn').style.display = 'none';
+        document.getElementById('submit-btn').style.display = 'none';
+
+        function showQuestion(questionNumber) {
+            for (let i = 1; i <= totalQuestions; i++) {
+                document.getElementById('question' + i).style.display = 'none';
+            }
+            document.getElementById('question' + questionNumber).style.display = 'block';
+            document.getElementById('prev-btn').style.display = questionNumber === 1 ? 'none' : 'inline';
+            document.getElementById('next-btn').style.display = questionNumber === totalQuestions ? 'none' : 'inline';
+            document.getElementById('submit-btn').style.display = questionNumber === totalQuestions ? 'inline' : 'none';
+        }
+
+        function nextQuestion() {
+            const currentQuestionElement = document.getElementById('question' + currentQuestion);
+            const inputs = currentQuestionElement.querySelectorAll('input[type="radio"]');
+            let answered = false;
+
+            for (const input of inputs) {
+                if (input.checked) {
+                    answered = true;
+                    break;
+                }
+            }
+
+            if (!answered) {
+                alert('Por favor, selecione uma resposta antes de avançar.');
+                return;
+            }
+
+            if (currentQuestion < totalQuestions) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 1) {
+                currentQuestion--;
+                showQuestion(currentQuestion);
+            }
+        }
+
+        function redirectToRecommendationPage() {
+            let highestScore = 'A';
+            for (const score in pontuacoes) {
+                if (pontuacoes[score] > pontuacoes[highestScore]) {
+                    highestScore = score;
+                }
+            }
+
+            let recommendationPage;
+            switch (highestScore) {
+                case 'A':
+                    recommendationPage = '../recs/thriller/rec-thriller-1.html';
+                    break;
+                case 'B':
+                    recommendationPage = '../recs/thriller/rec-thriller-2.html';
+                    break;
+                case 'C':
+                    recommendationPage = '../recs/thriller/rec-thriller-3.html';
+                    break;
+            }
+
+            window.location.href = recommendationPage;
+        }
+
+        const pontuacoes = {
+            A: 0,
+            B: 0,
+            C: 0
+        };
+
+        function submitQuiz() {
+            const form = document.getElementById('quiz-form');
+            const formData = new FormData(form);
+
+            for (let [name, value] of formData.entries()) {
+                if (value === 'B e C') {
+                    pontuacoes['B']++;
+                    pontuacoes['C']++;
+                } else {
+                    pontuacoes[value]++;
+                }
+            }
+
+            alert('Estas são as pontuações relativas às tuas respostas: '+ JSON.stringify(pontuacoes) + 'Prima OK para ser redirecionado para a sua recomendação :)');
+
+            redirectToRecommendationPage();
+        }
+
+        document.getElementById('playButton').addEventListener('click', function() {
+            var audio = document.getElementById('sound');
+            if (audio.paused) {
+                audio.play();
+                this.textContent = 'Pause Sound';  
+            } else {
+                audio.pause();
+                this.textContent = 'Play Sound';  
+            }
+        });
+    </script>
+</body>
+
+</html>

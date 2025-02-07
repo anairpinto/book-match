@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sobre o Book Mach</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+
+<body>
+    <button id="playButton">Play Sound</button>
+    <audio id="sound" loop>
+        <source src="sound/sobre.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <img class="exclama" src="images/exclamacao-gif.gif" alt="">
+
+    <h1 class="align-center">SOBRE O BOOK MATCH</h1>
+
+    <a class="move-on" href="menu.html">
+        <img src="images/seta-para-frente.png" alt="seta avançar">
+    </a>
+
+    <p class="intro-size">Boas! :D </p>
+    <p class="intro-size">Esta página pretende dar-te algum contexto no que toca ao BookMatch, assim como explicar qual é o 
+        seu propósito. <br>
+        O BookMatch é um quiz literário, cujo qual tem como objetivo fazer-te recomendações de livros baseadas nos teus 
+        gostos pessoais.</p>
+    <p class="intro-size">Terás de escolher uma das quatro opções literárias disponíveis conforme o que se ajuste mais ao 
+        teu estilo de leitura, as quais são Romance, Dark Romance, Fantasia e Thriller.
+        De seguida, ser-te-há pedido que respondas a 5 perguntas relativas ao género que escolheste, e de acordo com as tuas 
+        respostas, irás receber a recomendação de um livro que muito provavelmente irás gostar.
+    </p>
+    <p class="intro-size">Este site foi criado tendo em mente como público-alvo leitores portugueses, tendo link de compra em 
+        inglês nos livros que são originalmente dessa linguagem, sendo que alguns leitores portugueses têm preferência de leitura em 
+        inglês. Apenas os livros originalmente BR ou PT não possuem esse link pois não possuem tradução. Temos como 
+        principal propósito dar a conhecer livros bons, mas não tão conhecidos, e apelar a quem realmente aprecia ler para 
+        expandir as suas leituras para além das tendências.
+    </p>
+
+    <script>
+        document.getElementById('playButton').addEventListener('click', function() {
+            var audio = document.getElementById('sound');
+            if (audio.paused) {
+                audio.play();
+                this.textContent = 'Pause Sound';  
+            } else {
+                audio.pause();
+                this.textContent = 'Play Sound';  
+            }
+        });
+    </script>
+
+</body>
+
+</html>

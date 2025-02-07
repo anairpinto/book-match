@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Dark Romance</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+
+<body>
+    <button id="playButton">Play Sound</button>
+    <audio id="sound" loop>
+        <source src="../sound/darkromance.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <img class="dark" src="../images/dark-gif.gif" alt="">
+    <img class="dark2" src="../images/dark-gif.gif" alt=""><br>
+    <a class="go-back" href="../generos.html">
+        <img src="../images/seta-para-tras.png" alt="">
+    </a>
+    
+    <form id="quiz-form">
+        <div class="question" id="question1">
+            <h1 class="align-center-quiz">1. QUAIS DOS SEGUINTES TEMAS MAIS TE INTERESSAM?</h1>
+            <label><input type="radio" name="question1" value="A"> Desejo e consequências mortais</label><br>
+            <label><input type="radio" name="question1" value="B"> Obsessão e devoção</label><br>
+            <label><input type="radio" name="question1" value="C"> Segredos e um romance proibido</label><br>
+        </div>
+        <div class="question" id="question2">
+            <h1 class="align-center-quiz">2. QUE RITMO DE HISTÓRIA PREFERES?</h1>
+            <label><input type="radio" name="question2" value="A"> Rápido, com diversas reviravoltas</label><br>
+            <label><input type="radio" name="question2" value="B"> Médio, com um desenvolvimento mais profundo dos
+                personagens principais</label><br>
+            <label><input type="radio" name="question2" value="C"> Lento, com foco na construção do mundo</label><br>
+        </div>
+        <div class="question" id="question3">
+            <h1 class="align-center-quiz">3. QUAL DESTES ASPETOS ACHAS MAIS IMPORTANTE NA HISTÓRIA?</h1>
+            <label><input type="radio" name="question3" value="A e B"> Atmosfera sombria com emoções
+                intensas</label><br>
+            <label><input type="radio" name="question3" value="C"> Um final inesperado com um plot memorável</label><br>
+        </div>
+        <div class="question" id="question4">
+            <h1 class="align-center-quiz">4. QUE TIPO DE ANTAGONISTA ACHAS MAIS INTERESSANTE?</h1>
+            <label><input type="radio" name="question4" value="A"> Um vilão manipulador que desafia constantemente a
+                protagonista</label><br>
+            <label><input type="radio" name="question4" value="B"> Um amante obsessivo que lentamente se torna cada vez
+                mais perigoso</label><br>
+            <label><input type="radio" name="question4" value="C"> Um homem misterioso, cujas verdadeiras intenções vão
+                sendo reveladas gradualmente</label><br>
+        </div>
+        <div class="question" id="question5">
+            <h1 class="align-center-quiz">5. QUE SUSPENSE TE ATRAI MAIS NUM DARK ROMANCE?</h1>
+            <label><input type="radio" name="question5" value="A"> Momentos de tensão crescentes que levam a uma grande
+                revelação final</label><br>
+            <label><input type="radio" name="question5" value="B"> Uma atmosfera constante de perigo e
+                mistério</label><br>
+            <label><input type="radio" name="question5" value="C"> Segredos que são lentamente revelados, que vão
+                aumentando a tensão ao longo da história</label><br>
+        </div>
+        <div class="button-container">
+            <button type="button" id="prev-btn" onclick="prevQuestion()">Anterior</button>
+            <button type="button" id="next-btn" onclick="nextQuestion()">Próximo</button>
+            <button type="button" id="submit-btn" onclick="submitQuiz()">Recomendação</button>
+        </div>
+    </form>
+
+    <script>
+        let currentQuestion = 1;
+        const totalQuestions = 5;
+
+        document.getElementById('question' + currentQuestion).style.display = 'block';
+        document.getElementById('prev-btn').style.display = 'none';
+        document.getElementById('submit-btn').style.display = 'none';
+
+        function showQuestion(questionNumber) {
+            for (let i = 1; i <= totalQuestions; i++) {
+                document.getElementById('question' + i).style.display = 'none';
+            }
+            document.getElementById('question' + questionNumber).style.display = 'block';
+            document.getElementById('prev-btn').style.display = questionNumber === 1 ? 'none' : 'inline';
+            document.getElementById('next-btn').style.display = questionNumber === totalQuestions ? 'none' : 'inline';
+            document.getElementById('submit-btn').style.display = questionNumber === totalQuestions ? 'inline' : 'none';
+        }
+
+        function nextQuestion() {
+            const currentQuestionElement = document.getElementById('question' + currentQuestion);
+            const inputs = currentQuestionElement.querySelectorAll('input[type="radio"]');
+            let answered = false;
+
+            for (const input of inputs) {
+                if (input.checked) {
+                    answered = true;
+                    break;
+                }
+            }
+
+            if (!answered) {
+                alert('Por favor, selecione uma resposta antes de avançar.');
+                return;
+            }
+
+            if (currentQuestion < totalQuestions) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 1) {
+                currentQuestion--;
+                showQuestion(currentQuestion);
+            }
+        }
+
+        function redirectToRecommendationPage() {
+            let highestScore = 'A';
+            for (const score in pontuacoes) {
+                if (pontuacoes[score] > pontuacoes[highestScore]) {
+                    highestScore = score;
+                }
+            }
+
+            let recommendationPage;
+            switch (highestScore) {
+                case 'A':
+                    recommendationPage = '../recs/darkromance/rec-dark-1.html';
+                    break;
+                case 'B':
+                    recommendationPage = '../recs/darkromance/rec-dark-2.html';
+                    break;
+                case 'C':
+                    recommendationPage = '../recs/darkromance/rec-dark-3.html';
+                    break;
+            }
+
+            window.location.href = recommendationPage;
+        }
+
+        const pontuacoes = {
+            A: 0,
+            B: 0,
+            C: 0
+        };
+
+        function submitQuiz() {
+            const form = document.getElementById('quiz-form');
+            const formData = new FormData(form);
+
+            for (let [name, value] of formData.entries()) {
+                if (value === 'A e B') {
+                    pontuacoes['A']++;
+                    pontuacoes['B']++;
+                } else {
+                    pontuacoes[value]++;
+                }
+            }
+
+            alert('Estas são as pontuações relativas às tuas respostas: '+ JSON.stringify(pontuacoes) + 'Prima OK para ser redirecionado para a sua recomendação :)');
+
+            redirectToRecommendationPage();
+        }
+
+
+       
+        document.getElementById('playButton').addEventListener('click', function() {
+            var audio = document.getElementById('sound');
+            if (audio.paused) {
+                audio.play();
+                this.textContent = 'Pause Sound';  
+            } else {
+                audio.pause();
+                this.textContent = 'Play Sound';  
+            }
+        });
+
+    </script>
+</body>
+
+</html>

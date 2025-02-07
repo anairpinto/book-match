@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="pt">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Créditos</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+
+<body>
+    <button id="playButton">Play Sound</button>
+    <audio id="sound" loop>
+        <source src="sound/creditos.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <img class="esmad" src="images/esmad.PNG" alt="Esmad">
+    <img class="anas" src="images/anas.GIF" alt="Anas">
+    <a class="go-back" href="menu.html">
+        <img src="images/seta-para-tras.png" alt="Seta voltar atrás">
+    </a>
+    <h1 class="align-center-creditos">Créditos</h1>
+    <p class="center-text-creditos">
+        Acompanhado pelo Docente: <br> Tiago Dionísio <br><br>
+        Disciplina: <br> Design de Interfaces <br><br>
+        Licenciatura em Multimédia: <br> 2º ano, 2º semestre
+    </p>
+
+    <script>
+        document.getElementById('playButton').addEventListener('click', function() {
+            var audio = document.getElementById('sound');
+            if (audio.paused) {
+                audio.play();
+                this.textContent = 'Pause Sound';  
+            } else {
+                audio.pause();
+                this.textContent = 'Play Sound';  
+            }
+        });
+    </script>
+
+
+</body>
+
+</html>

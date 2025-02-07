@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Romance</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+
+<body>
+    <button id="playButton">Play Sound</button>
+    <audio id="sound" loop>
+        <source src="../sound/romance.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <img class="hearts" src="../images/heartzinhos-gif.GIF" alt="">
+    <img class="hearts2" src="../images/heartzinhos-gif.GIF" alt="">
+    <a class="go-back" href="../generos.html">
+        <img src="../images/seta-para-tras.png" alt="">
+    </a>
+    
+    <form id="quiz-form">
+        <div class="question" id="question1">
+            <h1 class="align-center-quiz">1. QUE PERSONAGEM PRINCIPAL PREFERES?</h1>
+            <label><input type="radio" name="question1" value="A"> Determinada com desejo de fazer justiça</label><br>
+            <label><input type="radio" name="question1" value="B"> Sensível e à procura de superar traumas
+                emocionais</label><br>
+            <label><input type="radio" name="question1" value="C"> Ambiciosa e em busca de realizar os seus
+                sonhos</label><br>
+        </div>
+        <div class="question" id="question2">
+            <h1 class="align-center-quiz">2. QUAIS DOS SEGUINTES TÓPICOS ACHAS MAIS RELEVANTE EM RELAÇÃO AO CASAL
+                PRINCIPAL?</h1>
+            <label><input type="radio" name="question2" value="A"> Criam uma aliança com um objetivo em
+                comum</label><br>
+            <label><input type="radio" name="question2" value="B"> Juntam-se para se ajudarem a aceitar o seu passado e
+                crescer mutuamente</label><br>
+            <label><input type="radio" name="question2" value="C"> Casam-se por conveniência</label><br>
+        </div>
+        <div class="question" id="question3">
+            <h1 class="align-center-quiz">3. GOSTAS DE HISTÓRIAS COM GRANDE FOCO NO ROMANCE?</h1>
+            <label><input type="radio" name="question3" value="A"> Não necessariamente, pode ter outros plots
+                relevantes</label><br>
+            <label><input type="radio" name="question3" value="B e C"> Sim, full romance</label><br>
+        </div>
+        <div class="question" id="question4">
+            <h1 class="align-center-quiz">4. QUE TIPO DE NARRATIVA PREFERES?</h1>
+            <label><input type="radio" name="question4" value="A"> Terceira pessoa</label><br>
+            <label><input type="radio" name="question4" value="B"> Primeira pessoa, focada num personagem</label><br>
+            <label><input type="radio" name="question4" value="C"> Narrativa mista, alternando entre os
+                personagens</label><br>
+        </div>
+        <div class="question" id="question5">
+            <h1 class="align-center-quiz">5. QUE TIPO DE FINAL PREFERES?</h1>
+            <label><input type="radio" name="question5" value="A"> Final aberto, deixa perguntas no ar e dá espaço para
+                a tua própria interpretação</label><br>
+            <label><input type="radio" name="question5" value="B"> Fechado, com uma resolução clara</label><br>
+            <label><input type="radio" name="question5" value="C"> Completamente inesperado e surpreendente</label><br>
+        </div>
+        <div class="button-container">
+            <button type="button" id="prev-btn" onclick="prevQuestion()">Anterior</button>
+            <button type="button" id="next-btn" onclick="nextQuestion()">Próximo</button>
+            <button type="button" id="submit-btn" onclick="submitQuiz()">Recomendação</button>
+        </div>
+    </form>
+
+    <script>
+        let currentQuestion = 1;
+        const totalQuestions = 5;
+
+        document.getElementById('question' + currentQuestion).style.display = 'block';
+        document.getElementById('prev-btn').style.display = 'none';
+        document.getElementById('submit-btn').style.display = 'none';
+
+        function showQuestion(questionNumber) {
+            for (let i = 1; i <= totalQuestions; i++) {
+                document.getElementById('question' + i).style.display = 'none';
+            }
+            document.getElementById('question' + questionNumber).style.display = 'block';
+            document.getElementById('prev-btn').style.display = questionNumber === 1 ? 'none' : 'inline';
+            document.getElementById('next-btn').style.display = questionNumber === totalQuestions ? 'none' : 'inline';
+            document.getElementById('submit-btn').style.display = questionNumber === totalQuestions ? 'inline' : 'none';
+        }
+
+        function nextQuestion() {
+            const currentQuestionElement = document.getElementById('question' + currentQuestion);
+            const inputs = currentQuestionElement.querySelectorAll('input[type="radio"]');
+            let answered = false;
+
+            for (const input of inputs) {
+                if (input.checked) {
+                    answered = true;
+                    break;
+                }
+            }
+
+            if (!answered) {
+                alert('Por favor, selecione uma resposta antes de avançar.');
+                return;
+            }
+
+            if (currentQuestion < totalQuestions) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 1) {
+                currentQuestion--;
+                showQuestion(currentQuestion);
+            }
+        }
+
+        function redirectToRecommendationPage() {
+            let highestScore = 'A';
+            for (const score in pontuacoes) {
+                if (pontuacoes[score] > pontuacoes[highestScore]) {
+                    highestScore = score;
+                }
+            }
+
+            let recommendationPage;
+            switch (highestScore) {
+                case 'A':
+                    recommendationPage = '../recs/romance/rec-romance-1.html';
+                    break;
+                case 'B':
+                    recommendationPage = '../recs/romance/rec-romance-2.html';
+                    break;
+                case 'C':
+                    recommendationPage = '../recs/romance/rec-romance-3.html';
+                    break;
+            }
+
+            window.location.href = recommendationPage;
+        }
+
+        const pontuacoes = {
+            A: 0,
+            B: 0,
+            C: 0
+        };
+
+        function submitQuiz() {
+            const form = document.getElementById('quiz-form');
+            const formData = new FormData(form);
+
+            for (let [name, value] of formData.entries()) {
+                if (value === 'B e C') {
+                    pontuacoes['B']++;
+                    pontuacoes['C']++;
+                } else {
+                    pontuacoes[value]++;
+                }
+            }
+
+            alert('Estas são as pontuações relativas às tuas respostas: '+ JSON.stringify(pontuacoes) + 'Prima OK para ser redirecionado para a sua recomendação :)');
+
+            redirectToRecommendationPage();
+        }
+
+       
+        document.getElementById('playButton').addEventListener('click', function() {
+            var audio = document.getElementById('sound');
+            if (audio.paused) {
+                audio.play();
+                this.textContent = 'Pause Sound';  
+            } else {
+                audio.pause();
+                this.textContent = 'Play Sound';  
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>

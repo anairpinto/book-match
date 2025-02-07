@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seleção Gênero</title>
+    <link rel="stylesheet" href="css/estilos.css">
+</head>
+
+<body>
+    <button id="playButton">Play Sound</button>
+    <audio id="sound" loop>
+        <source src="sound/selecionar.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <div>
+        <h1 class="align-center-genero">ESCOLHE UM GÊNERO LITERÁRIO</h1>
+        <button class="button" onclick="quizRomance()">ROMANCE</button>
+        <button class="button" onclick="quizDarkRomance()">DARK ROMANCE</button>
+        <button class="button" onclick="quizFantasia()">FANTASIA</button>
+        <button class="button" onclick="quizThriller()">THRILLER</button>
+    </div>
+    <a class="go-back" href="menu.html">
+        <img src="images/seta-para-tras.png" alt="seta voltar atrás">
+    </a>
+    <img class="clique" src="images/clique-gif.GIF" alt="">
+    <script>
+        function quizRomance() {
+            window.location.href = 'quizes/quiz-romance.html';
+        }
+        function quizDarkRomance() {
+            window.location.href = 'quizes/quiz-darkromance.html';
+        }
+        function quizFantasia() {
+            window.location.href = 'quizes/quiz-fantasia.html';
+        }
+        function quizThriller() {
+            window.location.href = 'quizes/quiz-thriller.html';
+        }
+
+        document.getElementById('playButton').addEventListener('click', function() {
+            var audio = document.getElementById('sound');
+            if (audio.paused) {
+                audio.play();
+                this.textContent = 'Pause Sound';  
+            } else {
+                audio.pause();
+                this.textContent = 'Play Sound';  
+            }
+        });
+    </script>
+</body>
+
+</html>

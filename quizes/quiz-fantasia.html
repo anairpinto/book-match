@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz Fantasia</title>
+    <link rel="stylesheet" href="../css/estilos.css">
+</head>
+
+<body>
+    <button id="playButton">Play Sound</button>
+    <audio id="sound" loop>
+        <source src="../sound/fantasia.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
+
+    <img class="potion" src="../images/potionzita.gif.GIF" alt="">
+    <img class="potion2" src="../images/potionzita.gif.GIF" alt="">
+    <a class="go-back" href="../generos.html">
+        <img src="../images/seta-para-tras.png" alt="">
+    </a>
+    
+    <form id="quiz-form">
+        <div class="question" id="question1">
+            <h1 class="align-center-quiz">1. QUE TIPO DE AMBIENTE MAIS GOSTAS NUMA FANTASIA?</h1>
+            <label><input type="radio" name="question1" value="A"> Um reino isolado com as suas próprias regras e
+                segredos</label><br>
+            <label><input type="radio" name="question1" value="B"> Uma sociedade distópica com normas
+                estritas</label><br>
+            <label><input type="radio" name="question1" value="C"> Um universo onde a magia é real e os seres
+                sobrenaturais caminham junto dos humanos</label><br>
+        </div>
+        <div class="question" id="question2">
+            <h1 class="align-center-quiz">2. GOSTAS DE FANTASIA COM ELEMENTOS DE ROMANCE?</h1>
+            <label><input type="radio" name="question2" value="A e C"> Sim, romantasy ♡</label><br>
+            <label><input type="radio" name="question2" value="B"> Não necessariamente, prefiro foco nas questões
+                sociais e políticas</label><br>
+        </div>
+        <div class="question" id="question3">
+            <h1 class="align-center-quiz">3. QUE TIPO DE RELACIONAMENTO ENTRE OS PERSONAGENS GOSTAS DE ACOMPANHAR?</h1>
+            <label><input type="radio" name="question3" value="A"> Rivalidades familiares intensas e
+                traições</label><br>
+            <label><input type="radio" name="question3" value="B"> Amizades fortes que desafiam as normas
+                sociais</label><br>
+            <label><input type="radio" name="question3" value="C"> Amores proibidos e conexões sobrenaturais</label><br>
+        </div>
+        <div class="question" id="question4">
+            <h1 class="align-center-quiz">4. QUE ESPERAS ENCONTRAR NO CLIMÁX DA HISTÓRIA?</h1>
+            <label><input type="radio" name="question4" value="A"> Uma batalha épica pelo poder</label><br>
+            <label><input type="radio" name="question4" value="B"> Uma revelação que põe o tudo o que os protagonistas
+                conheciam em causa</label><br>
+            <label><input type="radio" name="question4" value="C"> Um sacrifício romântico</label><br>
+        </div>
+        <div class="question" id="question5">
+            <h1 class="align-center-quiz">5. QUE TIPO DE PROTAGONISTA PREFERES SEGUIR?</h1>
+            <label><input type="radio" name="question5" value="A"> Uma rainha determinada a conquistar seu
+                trono</label><br>
+            <label><input type="radio" name="question5" value="B"> Uma rebelde que desafia o sistema</label><br>
+            <label><input type="radio" name="question5" value="C"> Uma heroína que enfrenta diversos desafios por
+                amor</label><br>
+        </div>
+        <div class="button-container">
+            <button type="button" id="prev-btn" onclick="prevQuestion()">Anterior</button>
+            <button type="button" id="next-btn" onclick="nextQuestion()">Próximo</button>
+            <button type="button" id="submit-btn" onclick="submitQuiz()">Recomendação</button>
+        </div>
+    </form>
+
+    <script>
+        let currentQuestion = 1;
+        const totalQuestions = 5;
+
+        document.getElementById('question' + currentQuestion).style.display = 'block';
+        document.getElementById('prev-btn').style.display = 'none';
+        document.getElementById('submit-btn').style.display = 'none';
+
+        function showQuestion(questionNumber) {
+            for (let i = 1; i <= totalQuestions; i++) {
+                document.getElementById('question' + i).style.display = 'none';
+            }
+            document.getElementById('question' + questionNumber).style.display = 'block';
+            document.getElementById('prev-btn').style.display = questionNumber === 1 ? 'none' : 'inline';
+            document.getElementById('next-btn').style.display = questionNumber === totalQuestions ? 'none' : 'inline';
+            document.getElementById('submit-btn').style.display = questionNumber === totalQuestions ? 'inline' : 'none';
+        }
+
+        function nextQuestion() {
+            const currentQuestionElement = document.getElementById('question' + currentQuestion);
+            const inputs = currentQuestionElement.querySelectorAll('input[type="radio"]');
+            let answered = false;
+
+            for (const input of inputs) {
+                if (input.checked) {
+                    answered = true;
+                    break;
+                }
+            }
+
+            if (!answered) {
+                alert('Por favor, selecione uma resposta antes de avançar.');
+                return;
+            }
+
+            if (currentQuestion < totalQuestions) {
+                currentQuestion++;
+                showQuestion(currentQuestion);
+            }
+        }
+
+        function prevQuestion() {
+            if (currentQuestion > 1) {
+                currentQuestion--;
+                showQuestion(currentQuestion);
+            }
+        }
+
+        function redirectToRecommendationPage() {
+            let highestScore = 'A';
+            for (const score in pontuacoes) {
+                if (pontuacoes[score] > pontuacoes[highestScore]) {
+                    highestScore = score;
+                }
+            }
+
+            let recommendationPage;
+            switch (highestScore) {
+                case 'A':
+                    recommendationPage = '../recs/fantasia/rec-fantasia-1.html';
+                    break;
+                case 'B':
+                    recommendationPage = '../recs/fantasia/rec-fantasia-2.html';
+                    break;
+                case 'C':
+                    recommendationPage = '../recs/fantasia/rec-fantasia-3.html';
+                    break;
+            }
+
+            window.location.href = recommendationPage;
+        }
+
+        const pontuacoes = {
+            A: 0,
+            B: 0,
+            C: 0
+        };
+
+        function submitQuiz() {
+            const form = document.getElementById('quiz-form');
+            const formData = new FormData(form);
+
+            for (let [name, value] of formData.entries()) {
+                if (value === 'A e C') {
+                    pontuacoes['A']++;
+                    pontuacoes['C']++;
+                } else {
+                    pontuacoes[value]++;
+                }
+            }
+
+            alert('Estas são as pontuações relativas às tuas respostas: '+ JSON.stringify(pontuacoes) + 'Prima OK para ser redirecionado para a sua recomendação :)');
+
+            redirectToRecommendationPage();
+        }
+
+        document.getElementById('playButton').addEventListener('click', function() {
+            var audio = document.getElementById('sound');
+            if (audio.paused) {
+                audio.play();
+                this.textContent = 'Pause Sound';  
+            } else {
+                audio.pause();
+                this.textContent = 'Play Sound';  
+            }
+        });
+
+    </script>
+</body>
+
+</html>
